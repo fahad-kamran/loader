@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap5.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="container-lg">
+        <div class="row"></div>
+        <template id="card-template">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <img src="" data-img class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" data-title></h5>
+                        <p class="card-text" data-description></p>
+                        <h5 data-price></h5>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+    <script>
+        const grid = document.querySelector('.row')
+        const cardTemplate = document.getElementById('card-template')
+        fetch("https://fakestoreapi.com/products")
+            .then(res => res.json())
+            .then(posts => {
+                grid.innerHTML = ''
+                // console.log('==>', posts)
+                posts.forEach(post => {
+                    const div = cardTemplate.content.cloneNode(true)
+                    div.querySelector('[data-img]').src = post.image
+                    div.querySelector('[data-title]').textContent = post.title
+                    var description = post.description;
+                    div.querySelector('[data-description]').textContent = description.slice(0, 50) + (description.length > 50 ? "..." : "");
+                    div.querySelector('[data-price]').textContent = `Price : ${post.price}`
+                    grid.append(div)
+                })
+            })
+    </script>
+</body>
+
+</html>
